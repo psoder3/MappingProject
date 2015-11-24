@@ -15,9 +15,6 @@ if __name__ == "__main__":
 	with open(sys.argv[1], 'r') as fhGenome:
 		genome = grabGenome(fhGenome)
 	with open(sys.argv[2], 'r') as fhReads:
-#		if sys.argv[3] == 'fasta':
-#			reads = fasta( fhReads.read())
-#		if sys.argv[3] == 'fastq':
 		reads = grabReads( fhReads)
 	with open(sys.argv[3], 'w') as outfile:
 		outfile.write( genome )
