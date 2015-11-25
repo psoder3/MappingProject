@@ -2,3 +2,7 @@ rnaseqChr.fa
 rnasim.fa
 19.small.fastq
 frag.genome.fa
+19.fastq
+chr19.fa
+*.sam
+genomeBuildFiles/*
