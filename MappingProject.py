@@ -1,5 +1,6 @@
 # PASSED OFF ROSALIND PROBLEM IN 35 SECONDS (9,500 char reference genome and 15,000 reads)
 import sys
+from parser import grabReads, grabGenome
 globalstr = {} #globalstr["text"] holds the seq
 suffixArray = [];
 first = []; # seq at suffix array. chars in order of s array
