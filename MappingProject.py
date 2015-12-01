@@ -13,15 +13,15 @@ def readFile():
 	with open( sys.argv[1] ) as fh:
 		for line in fh:
 			if counter > 0:
-				patterns.append(line[0:len(line)-1]);
+				patterns.append(line[0:len(line)-1].upper());
 			else:
-				globalstr["text"] = line[0:len(line)-1]+"$";
-				text = line[0:len(line)-1];
+				globalstr["text"] = (line[0:len(line)-1]+"$").upper();
+				text = str(line[0:len(line)-1]).upper();
 			counter += 1;
 	return patterns;
 
 def getRange(indices,first,char,obj):
-	
+
 	obj["foundFirst"] = False;
 	obj["foundLast"] = False;
 	for i in range(len(indices)):
@@ -110,19 +110,19 @@ def createSuffixes(text):
 def getSuffixArray(text):
 	suffixes = createSuffixes(text);
 	suffixes.sort();
-	
+
 	indices = [];
 	for suffix in suffixes:
 		index = getIndex(suffix,text);
 		indices.append(index);
-		
+
 	return indices;
 
 def printStringIndices(result):
 	strin = "";
 	for index in result:
 		strin += str(index) + " ";
-		
+
 	return strin;
 
 def getFirst(suffixArray, FirstCharOccurances):
@@ -215,17 +215,17 @@ def printSAM(results):
 			print(counterLine);
 		piece = globalstr["text"][results[i]:results[i]+length];
 		out += "R" + str(i+1) + "\t" + "0" + "\t" + "Chr1" + "\t" + str(results[i]+1) + "\t" + "255" + "\t" + str(length) + "M" + "\t" + "*" + "\t" + "0" + "\t" + "0" + "\t" + piece + "\t" + "*" + "\n";
-		
+
 	return out;
 
 FirstCharOccurances = []; # This will help us know where the first of each char A C G and T occur in the First Array
 
-	
+
 print("reading file...");
 patterns = readFile();
 print("done reading file");
 print("creating Suffix Array...");
-suffixArray = getSuffixArray(globalstr["text"]);
+suffixArray = getSuffixArray(str(globalstr["text"]));
 print("done creating Suffix Array");
 print("getting first array...");
 first = getFirst(suffixArray,FirstCharOccurances);
