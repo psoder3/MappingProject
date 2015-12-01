@@ -54,16 +54,16 @@ def findOccurances(patterns,first,BWT,ltf):
 		lastChar = string[-1];
 		firstIndex = 0;
 		lastIndex = 0;
-		if lastChar == "A":
+		if lastChar == "A" or lastChar == "a":
 			firstIndex = FirstCharOccurances[0];
 			lastIndex = FirstCharOccurances[1];
-		if lastChar == "C":
+		if lastChar == "C" or lastChar == "c":
 			firstIndex = FirstCharOccurances[1];
 			lastIndex = FirstCharOccurances[2];
-		if lastChar == "G":
+		if lastChar == "G" or lastChar == "g":
 			firstIndex = FirstCharOccurances[2];
 			lastIndex = FirstCharOccurances[3];
-		if lastChar == "T":
+		if lastChar == "T" or lastChar == "t":
 			firstIndex = FirstCharOccurances[3];
 			lastIndex = len(first);
 		#indices = range(0,len(first));
@@ -91,7 +91,7 @@ def findOccurances(patterns,first,BWT,ltf):
 					if nextChar == BWT[i][0]:
 						#print(ltf[i]);
 						indices.append(ltf[i]);
-	#results.sort();
+	results.sort();
 	return results;
 
 def getIndex(suffix, text):
@@ -131,22 +131,22 @@ def getFirst(suffixArray, FirstCharOccurances):
 	currentChar = globalstr["text"][suffixArray[0]];
 	for index in suffixArray:
 		char = globalstr["text"][index];
-		if char == "A":
+		if char == "A" or char == "a":
 			Acounter += 1;
 			counter = Acounter;
 			if Acounter == 1:
 				FirstCharOccurances.append(len(first));	#This FirstCharOccurances shenanigans is an optimization for searching that cuts the time in half
-		elif char == "C":
+		elif char == "C" or char == "c":
 			Ccounter += 1;
 			counter = Ccounter;
 			if Ccounter == 1:
 				FirstCharOccurances.append(len(first));
-		elif char == "G":
+		elif char == "G" or char == "g":
 			Gcounter += 1;
 			counter = Gcounter;
 			if Gcounter == 1:
 				FirstCharOccurances.append(len(first));
-		elif char == "T":
+		elif char == "T" or char == "t":
 			Tcounter += 1;
 			counter = Tcounter;
 			if Tcounter == 1:
@@ -154,7 +154,7 @@ def getFirst(suffixArray, FirstCharOccurances):
 		else:
 			counter = 1;
 		first.append(char+"_"+str(counter));
-	print(FirstCharOccurances);
+	#print(FirstCharOccurances);
 	return first;
 
 def getBWT(suffixArray):
@@ -167,16 +167,16 @@ def getBWT(suffixArray):
 	currentChar = globalstr["text"][suffixArray[-1]];
 	for index in suffixArray:
 		char = globalstr["text"][index-1];
-		if char == "A":
+		if char == "A" or char == "a":
 			Acounter += 1;
 			counter = Acounter;
-		elif char == "C":
+		elif char == "C" or char == "c":
 			Ccounter += 1;
 			counter = Ccounter;
-		elif char == "G":
+		elif char == "G" or char == "g":
 			Gcounter += 1;
 			counter = Gcounter;
-		elif char == "T":
+		elif char == "T" or char == "t":
 			Tcounter += 1;
 			counter = Tcounter;
 		else:
@@ -192,6 +192,15 @@ def getLTF(first,BWT):
 		index = first.index(element);
 		LTF.append(index);
 	return LTF;
+
+def printSAM(results):
+	out = "";
+	length = len(patterns[0]);
+	for i in range(len(results)):
+		piece = globalstr["text"][results[i]:results[i]+length];
+		out += "R" + str(i+1) + "\t" + "0" + "\t" + "Chr1" + "\t" + str(results[i]+1) + "\t" + "255" + "\t" + str(length) + "M" + "\t" + "*" + "\t" + "0" + "\t" + "0" + "\t" + piece + "\t" + "*" + "\n";
+		
+	return out;
 
 FirstCharOccurances = []; # This will help us know where the first of each char A C G and T occur in the First Array
 
@@ -220,8 +229,13 @@ print("done finding occurrences");
 print("printing results...");
 toPrint = printStringIndices(results);
 print(toPrint);
-
+toPrintSAM = printSAM(results);
+print(toPrintSAM);
 
 f = open('out.txt','w')
 f.write(toPrint) # python will convert \n to os.linesep
+f.close()
+
+f = open('out.sam','w')
+f.write(toPrintSAM) # python will convert \n to os.linesep
 f.close()
