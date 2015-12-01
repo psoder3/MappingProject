@@ -49,7 +49,11 @@ def findOccurances(patterns,first,BWT,ltf):
 	#print(BWT);
 	#print(ltf);
 	obj = {}
+	counterStr = 0;
 	for string in patterns: # FOR EACH PATTERN
+		counterStr += 1;
+		if counterStr % 100 == 0:
+			print(counterStr);
 		#print(string);
 		lastChar = string[-1];
 		firstIndex = 0;
@@ -132,21 +136,25 @@ def getFirst(suffixArray, FirstCharOccurances):
 	for index in suffixArray:
 		char = globalstr["text"][index];
 		if char == "A" or char == "a":
+			char = "A";
 			Acounter += 1;
 			counter = Acounter;
 			if Acounter == 1:
 				FirstCharOccurances.append(len(first));	#This FirstCharOccurances shenanigans is an optimization for searching that cuts the time in half
 		elif char == "C" or char == "c":
+			char = "C";
 			Ccounter += 1;
 			counter = Ccounter;
 			if Ccounter == 1:
 				FirstCharOccurances.append(len(first));
 		elif char == "G" or char == "g":
+			char = "G";
 			Gcounter += 1;
 			counter = Gcounter;
 			if Gcounter == 1:
 				FirstCharOccurances.append(len(first));
 		elif char == "T" or char == "t":
+			char = "T";
 			Tcounter += 1;
 			counter = Tcounter;
 			if Tcounter == 1:
@@ -168,15 +176,19 @@ def getBWT(suffixArray):
 	for index in suffixArray:
 		char = globalstr["text"][index-1];
 		if char == "A" or char == "a":
+			char = "A";
 			Acounter += 1;
 			counter = Acounter;
 		elif char == "C" or char == "c":
+			char = "C";
 			Ccounter += 1;
 			counter = Ccounter;
 		elif char == "G" or char == "g":
+			char = "G";
 			Gcounter += 1;
 			counter = Gcounter;
 		elif char == "T" or char == "t":
+			char = "T";
 			Tcounter += 1;
 			counter = Tcounter;
 		else:
@@ -196,7 +208,11 @@ def getLTF(first,BWT):
 def printSAM(results):
 	out = "";
 	length = len(patterns[0]);
+	counterLine = 0;
 	for i in range(len(results)):
+		counterLine += 1;
+		if counterLine % 10000 == 0:
+			print(counterLine);
 		piece = globalstr["text"][results[i]:results[i]+length];
 		out += "R" + str(i+1) + "\t" + "0" + "\t" + "Chr1" + "\t" + str(results[i]+1) + "\t" + "255" + "\t" + str(length) + "M" + "\t" + "*" + "\t" + "0" + "\t" + "0" + "\t" + piece + "\t" + "*" + "\n";
 		
@@ -228,10 +244,12 @@ results = findOccurances(patterns,first,BWT,ltf);
 print("done finding occurrences");
 print("printing results...");
 toPrint = printStringIndices(results);
-print(toPrint);
+print("done creating indices");
+#print(toPrint);
 toPrintSAM = printSAM(results);
-print(toPrintSAM);
-
+#print(toPrintSAM);
+print("Done creating SAM list");
+print("Writing SAM file...");
 f = open('out.txt','w')
 f.write(toPrint) # python will convert \n to os.linesep
 f.close()
@@ -239,3 +257,4 @@ f.close()
 f = open('out.sam','w')
 f.write(toPrintSAM) # python will convert \n to os.linesep
 f.close()
+print("ALL DONE");
