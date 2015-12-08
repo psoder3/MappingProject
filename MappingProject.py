@@ -59,16 +59,16 @@ def findOccurances(patterns,first,BWT,ltf):
 		lastChar = string[-1];
 		firstIndex = 0;
 		lastIndex = 0;
-		if lastChar == "A" or lastChar == "a":
+		if lastChar == "A":
 			firstIndex = FirstCharOccurances[0];
 			lastIndex = FirstCharOccurances[1];
-		if lastChar == "C" or lastChar == "c":
+		if lastChar == "C":
 			firstIndex = FirstCharOccurances[1];
 			lastIndex = FirstCharOccurances[2];
-		if lastChar == "G" or lastChar == "g":
+		if lastChar == "G":
 			firstIndex = FirstCharOccurances[2];
 			lastIndex = FirstCharOccurances[3];
-		if lastChar == "T" or lastChar == "t":
+		if lastChar == "T":
 			firstIndex = FirstCharOccurances[3];
 			lastIndex = len(first);
 		#indices = range(0,len(first));
@@ -251,11 +251,11 @@ toPrintSAM = printSAM(results);
 #print(toPrintSAM);
 print("Done creating SAM list");
 print("Writing SAM file...");
-f = open('out.txt','w')
+f = open(sys.argv[2] + 'txt','w')
 f.write(toPrint) # python will convert \n to os.linesep
 f.close()
 
-f = open('out.sam','w')
+f = open(sys.argv[2] + '.sam','w')
 f.write(toPrintSAM) # python will convert \n to os.linesep
 f.close()
 print("ALL DONE");
